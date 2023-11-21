@@ -1,0 +1,89 @@
+<h5 class=" text-center fw-bold fs-4 m-5">Список заметок, создание, редактирование, удаление заметок и прикрепление к определенной дате и времени.</h5>
+<hr class="my-4">
+
+<!-- Всплывающее окно для добавления заметки -->
+<div *ngIf="snackBarMessage" class="snackbar-container" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #ffffff; padding: 15px; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); z-index: 9999;">
+  <div style="margin-bottom: 10px;">
+    <!-- Добавленный контейнер -->
+    {{ snackBarMessage }}
+  </div>
+  <button mat-button (click)="closeSnackBar()" class="btn-primary btn">Закрыть</button>
+</div>
+
+
+<div class="m-5 d-grid gap-3">
+  <div class="row">
+    <div class="col">
+      <div class="form-floating">
+        <input placeholder="text" id="newTitle" name="newTitle" [(ngModel)]="newNote.title" class="form-control" required>
+        <label for="newTitle" class="text-primary form-label">Название:</label>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-floating">
+        <textarea placeholder="text" id="newContent" name="newContent" [(ngModel)]="newNote.content" class="form-control" required></textarea>
+        <label for="newContent" class="text-primary form-label">Содержание:</label>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <label for="reminderDateTime" class="text-primary form-label me-2">Выберите дату и время напоминания (необязательно):</label>
+      <input type="datetime-local" id="reminderDateTime" [(ngModel)]="reminderDateTime" name="reminderDateTime" [ngModelOptions]="{standalone: true}" class="form-label">
+    </div>
+  </div>
+  <button type="button" class="btn btn-primary" (click)="addNoteWithReminder()">Добавить заметку</button>
+</div>
+<hr class="my-4">
+
+<!-- Список заметок -->
+<mat-card *ngFor="let note of notes" class="card text-dark mt-5 bg-light">
+  <mat-card-content>
+    <h3 class="card-title">Название: {{ note.title }}</h3>
+    <p class="card-body">Содержание: {{ note.content }}</p>
+
+    <!-- Проверяем, есть ли у заметки теги -->
+    <p *ngIf="getTagsForNote(note).length > 0" class="card-body">Тег: {{ getTagsForNote(note).join(', ') }}</p>
+
+    <p class="card-body">Дата создания: {{ note.creationDate | date:'medium' }}</p>
+
+    <!-- Проверяем, есть ли у заметки напоминание -->
+    <p *ngIf="note.reminderDate" class="card-body">Напоминание: {{ note.reminderDate | date:'medium' }}</p>
+    <div class="card-title text-dark mt-2">
+      <button type="submit" class="btn-primary btn me-2" (click)="startEditing(note)">Изменить</button>
+
+      <button type="submit" class="btn-primary btn" (click)="deleteNote(note.noteId)">Удалить</button>
+    </div>
+  </mat-card-content>
+
+  <!-- Редактирование заметок-->
+  <form *ngIf="editingNote && note.noteId === selectedNoteId" (ngSubmit)="updateNote()" class="card text-dark mt-3 bg-light">
+
+    <div class="card-body">
+      <div class="col">
+        <div class="form-floating">
+          <input placeholder="text" id="noteTitle" name="newTitle" [(ngModel)]="editingNote.title" class="form-control" required>
+          <label for="noteTitle" class="text-primary form-label">Название:</label>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="form-floating">
+          <textarea placeholder="text" id="noteContent" name="newContent" [(ngModel)]="editingNote.content" class="form-control"></textarea>
+          <label for="noteContent" class="text-primary form-label">Содержание:</label>
+        </div>
+      </div>
+      <button type="submit" class="btn-primary btn mt-3">Изменить заметку</button>
+    </div>
+  </form>
+</mat-card>
+
+
+<div class="card text-dark mt-5 text-center">
+  <div class="card-body">
+    <h6 class="card-title"></h6>
+    <div class="card-title" style="color:#ff3939">
+
+    </div>
+  </div>
+</div>

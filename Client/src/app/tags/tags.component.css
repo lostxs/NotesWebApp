@@ -1,0 +1,5 @@
+.snackbar-container button {
+  margin-top: 8px; /* Отступ между текстом и кнопкой */
+  display: block;
+  margin: 0 auto; /* Выравнивание по центру */
+}

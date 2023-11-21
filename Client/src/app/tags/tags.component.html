@@ -1,0 +1,75 @@
+<h5 class=" text-center fw-bold fs-4 m-5">Создание, удаление тегов, установка тегов и список тегов.</h5>
+<hr class="my-4">
+
+<!-- Добавление тега -->
+
+<form (submit)="addTag()" class="card bg-light mt-3">
+
+  <div class="card-body">
+    <div class="col">
+      <div class="form-floating">
+        <input placeholder="text" id="newTagName" name="newTagName" [(ngModel)]="newTag.name" class="form-control" required>
+        <label for="newTagName" class="text-primary form-label">Название тега:</label>
+      </div>
+    </div>
+  </div>
+  <button type="submit" class="btn-primary btn mt-2">Добавить Тег</button>
+</form>
+<hr class="my-4">
+
+
+<div class="m-5 d-grid gap-3">
+  <div class="row">
+    <div class="col">
+      <!-- Список тегов -->
+      <div class="form-floating">
+        <select id="tagSelect" [(ngModel)]="selectedTagId" class="form-control">
+          <option *ngFor="let tag of tags" [value]="tag.tagId">{{ tag.name }}</option>
+        </select>
+        <label for="tagSelect" class="text-primary">Выберите Тег:</label>
+      </div>
+    </div>
+
+    <div class="col">
+      <!-- Список заметок -->
+      <div class="form-floating">
+        <select id="noteSelect" [(ngModel)]="selectedNoteId" class="form-control">
+          <option *ngFor="let note of notes" [value]="note.noteId">{{ note.title }}</option>
+        </select>
+        <label for="noteSelect" class="text-primary">Выберите заметку:</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Кнопка для присвоения тега к заметке -->
+  <button type="button" class="btn btn-primary" (click)="assignTagToNote()">Присвоить Тег заметке</button>
+
+  <!-- Всплывающее окно -->
+  <div *ngIf="snackBarMessage" class="snackbar-container" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #ffffff; padding: 15px; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); z-index: 9999;">
+    <div style="margin-bottom: 10px;">
+      <!-- Добавленный контейнер -->
+      {{ snackBarMessage }}
+    </div>
+    <button mat-button (click)="closeSnackBar()" class="btn-primary btn">Закрыть</button>
+  </div>
+</div>
+<hr class="my-4">
+
+
+
+<!-- Список тегов -->
+<div class="row">
+  <div *ngFor="let tag of tags; let i = index" class="col-md-6">
+    <div class="card bg-light mt-3">
+      <div class="card-body">
+        <h3 class="card-title">Название Тега: {{ tag.name }}</h3>
+        <div class="card-title text-dark mt-2">
+          <button type="button" class="btn-primary btn" (click)="deleteTag(tag.tagId)">Удалить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,15 @@
+<h5 class=" text-center fw-bold fs-4 m-5">Список заметок у которых имеется напоминание.</h5>
+<hr class="my-4">
+
+<!-- Список заметок -->
+<mat-card *ngFor="let note of notesWithReminders" class="card text-dark mt-5 bg-light">
+  <mat-card-content>
+    <h3 class="card-title">Имя: {{ note.title }}</h3>
+    <p class="card-body">Содержание: {{ note.content }}</p>
+
+
+    <!-- Проверяем, есть ли у заметки напоминание -->
+    <p *ngIf="note.reminderDate" class="card-body">Напоминание: {{ note.reminderDate | date:'medium' }}</p>
+
+  </mat-card-content>
+</mat-card>
